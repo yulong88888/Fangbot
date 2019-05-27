@@ -56,7 +56,6 @@ void ShiftStepper::setNextStep() {
     }
   } else {
     _remaining = -1;
-    Serial.println("0.0");
     release();
   }
 }

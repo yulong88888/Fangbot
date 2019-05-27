@@ -8,6 +8,8 @@
 #define SHIFT_REG_CLOCK 4
 #define SHIFT_REG_LATCH 5
 
+#define SERVO           9
+
 //
 #define STEPS_PER_TURN    2048.0f
 
