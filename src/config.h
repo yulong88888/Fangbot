@@ -10,6 +10,11 @@
 
 #define SERVO           9
 
+#define NFC_SS_PIN      10
+
+#define SOFT_SERIAL_T   6
+#define SOFT_SERIAL_R   7
+
 //
 #define STEPS_PER_TURN    2048.0f
 
