@@ -4,16 +4,19 @@
 #include "ShiftStepper.h"
 
 //
-#define SHIFT_REG_DATA 2
-#define SHIFT_REG_CLOCK 4
-#define SHIFT_REG_LATCH 5
+#define SHIFT_REG_DATA 1
+#define SHIFT_REG_CLOCK 2
+#define SHIFT_REG_LATCH 3
+
+#define SOFT_SERIAL_BLE_T   4
+#define SOFT_SERIAL_BLE_R   5
+
+#define SOFT_SERIAL_MP3_T   6
+#define SOFT_SERIAL_MP3_R   7
 
 #define SERVO           9
 
 #define NFC_SS_PIN      10
-
-#define SOFT_SERIAL_T   6
-#define SOFT_SERIAL_R   7
 
 //
 #define STEPS_PER_TURN    2048.0f

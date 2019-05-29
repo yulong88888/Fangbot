@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Thread.h>
 #include <ThreadController.h>
+#include "ble.h"
 #include "config.h"
 #include "nfc.h"
 #include "servo.h"
@@ -25,6 +26,10 @@ Servo penServo;
 
 NFC mp3nfc;
 
+BLE ble;
+
+String comData = "";
+
 void setup() {
   Serial.begin(115200);
   left = new ShiftStepper(0);
@@ -40,7 +45,9 @@ void setup() {
 
   penServo.setup(SERVO, PENUP_DELAY, PENDOWN_DELAY);
 
-  mp3nfc.setup(NFC_SS_PIN, SOFT_SERIAL_R, SOFT_SERIAL_T);
+  mp3nfc.setup(NFC_SS_PIN, SOFT_SERIAL_MP3_R, SOFT_SERIAL_MP3_T);
+
+  ble.setup(SOFT_SERIAL_BLE_R, SOFT_SERIAL_BLE_T);
 
   servoThread->setInterval(1);
   servoThread->onRun(servo);
@@ -55,7 +62,20 @@ void setup() {
   // penServo.setPenUp();
 }
 
-void loop() { controll.run(); }
+void loop() {
+  // controll.run();
+  ble.handlerMsg();
+  if (Serial.available()) {
+    char temp = char(Serial.read());
+    comData += temp;
+    if (temp == '\n') {
+      Serial.print(comData);
+      ble.config(comData);
+      Serial.flush();
+      comData = "";
+    }
+  }
+}
 
 void shiftStepper() {
   if (left->ready() && right->ready()) {

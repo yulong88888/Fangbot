@@ -4,11 +4,11 @@
 #include <SoftwareSerial.h>
 
 MFRC522 *mfrc522;
-SoftwareSerial *mySerial;
+SoftwareSerial *mp3Serial;
 
 void NFC::setup(int SS_PIN, int receivePin, int transmitPin) {
-  mySerial = new SoftwareSerial(receivePin, transmitPin);
-  mySerial->begin(9600);
+  mp3Serial = new SoftwareSerial(receivePin, transmitPin);
+  mp3Serial->begin(9600);
 
   mfrc522 = new MFRC522(SS_PIN, NULL);
   SPI.begin();  // Init SPI bus
@@ -92,7 +92,7 @@ void NFC::handler() {
   sendBuffer[17] = count & 0xff;
   Serial.println();
   dump_byte_array(sendBuffer, 18);
-  mySerial->write((char *)sendBuffer);
+  mp3Serial->write((char *)sendBuffer);
 
   delay(1);
 
