@@ -4,9 +4,9 @@
 #include "ShiftStepper.h"
 
 //电机
-#define SHIFT_REG_DATA 14
-#define SHIFT_REG_CLOCK 15
-#define SHIFT_REG_LATCH 16
+#define SHIFT_REG_DATA 14  //A0
+#define SHIFT_REG_CLOCK 15 //A1
+#define SHIFT_REG_LATCH 16 //A2
 
 //蓝牙串口
 #define SOFT_SERIAL_BLE_T 4
