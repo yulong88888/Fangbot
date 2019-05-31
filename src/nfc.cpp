@@ -38,7 +38,6 @@ void NFC::handler() {
   Serial.print(F("Name: "));
 
   byte buffer1[18];
-  byte sendBuffer[18];
 
   block = 4;
   len = 18;
@@ -78,13 +77,13 @@ void NFC::handler() {
   //数据长度
   byte len2 = getBytesLength(buffer1);
   sendBuffer[2] = len2 + 1;
-  //flash U盘 sd卡 USB:00 SD:01 FLASH:02 NO_DEVICE：FF
+  // flash U盘 sd卡 USB:00 SD:01 FLASH:02 NO_DEVICE：FF
   sendBuffer[3] = 0x02;
   //数据
   for (int i = 0; i < len2; i++) {
     sendBuffer[4 + i] = buffer1[i];
   }
-  //SM
+  // SM
   int count = 0;
   for (int i = 0; i < 17; i++) {
     count += sendBuffer[i];
@@ -92,13 +91,14 @@ void NFC::handler() {
   sendBuffer[17] = count & 0xff;
   Serial.println();
   dump_byte_array(sendBuffer, 18);
-  mp3Serial->write((char *)sendBuffer);
 
   delay(1);
 
   mfrc522->PICC_HaltA();
   mfrc522->PCD_StopCrypto1();
 }
+
+void NFC::play() { mp3Serial->write((char *)sendBuffer); }
 
 int NFC::getBytesLength(byte *buffer) {
   int len = 0;
