@@ -24,6 +24,7 @@ void servo();
 void nfc();
 void callback(char cmd);
 void doTask();
+void taskFinish();
 
 Servo penServo;
 
@@ -121,7 +122,6 @@ void doTask() {
       Serial.println("NFC_MP3");
       break;
   }
-  taskList.pop_front();
 }
 
 /**
@@ -134,8 +134,18 @@ void callback(char cmd) {
   doTask();
 }
 
+/**
+ * 任务完成
+ */
+void taskFinish() {
+  char task = taskList.at(0);
+  ble.send(task, true);
+  taskList.pop_front();
+}
+
 void shiftStepper() {
   if (left->ready() && right->ready()) {
+    taskFinish();
     controll.remove(shiftStepperThread);
     return;
   }
@@ -147,6 +157,7 @@ void servo() {
   if (!penServo.ready()) {
     penServo.servoHandler();
   } else {
+    taskFinish();
     controll.remove(servoThread);
   }
 }
@@ -155,6 +166,8 @@ void nfc() {
   mp3nfc.handler();
   if (mp3nfc.checkReady()) {
     mp3nfc.play();
+    //这个响应包应该有个反馈
+    taskFinish();
     controll.remove(mp3nfcThread);
   }
 }

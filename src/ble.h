@@ -10,12 +10,12 @@ class BLE {
   void setup(int receivePin, int transmitPin);
   void handlerMsg(cb callback);
   void config(String data);
+  void send(char cmd,bool isRevOrOK);
 
  private:
   String bleComData = "";
   bool wait(String data);
   char doMsg(String str);
-  void send(char cmd,bool isRevOrOK);
   void split(char *src, const char *separator, char **dest);
 };
 
