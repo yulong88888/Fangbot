@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <Thread.h>
 #include <ThreadController.h>
-#include "QList.h"
+// #include "QList.h"
 #include "ble.h"
 #include "config.h"
 #include "nfc.h"
@@ -34,7 +34,8 @@ BLE ble;
 
 String comData = "";
 
-QList<char> taskList;
+// QList<char> taskList;
+char task;
 
 void setup() {
   Serial.begin(115200);
@@ -80,7 +81,7 @@ void loop() {
 }
 
 void doTask() {
-  char task = taskList.at(0);
+  // char task = taskList.at(0);
   Serial.println("dotask");
   switch (task) {
     case GO:
@@ -130,7 +131,8 @@ void doTask() {
 void callback(char cmd) {
   Serial.println("new task");
   Serial.println(cmd);
-  taskList.push_back(cmd);
+  // taskList.push_back(cmd);
+  task = cmd;
   doTask();
 }
 
@@ -138,9 +140,10 @@ void callback(char cmd) {
  * 任务完成
  */
 void taskFinish() {
-  char task = taskList.at(0);
+  // char task = taskList.at(0);
   ble.send(task, true);
-  taskList.pop_front();
+  // taskList.pop_front();
+  task = 0;
 }
 
 void shiftStepper() {
