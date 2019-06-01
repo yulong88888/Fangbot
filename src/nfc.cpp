@@ -93,12 +93,18 @@ void NFC::handler() {
   dump_byte_array(sendBuffer, 18);
 
   delay(1);
+  readSuccess = true;
 
   mfrc522->PICC_HaltA();
   mfrc522->PCD_StopCrypto1();
 }
 
-void NFC::play() { mp3Serial->write((char *)sendBuffer); }
+bool NFC::checkReady() { return readSuccess; }
+
+void NFC::play() {
+  mp3Serial->write((char *)sendBuffer);
+  readSuccess = false;
+}
 
 int NFC::getBytesLength(byte *buffer) {
   int len = 0;

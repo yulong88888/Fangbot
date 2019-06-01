@@ -54,12 +54,8 @@ void setup() {
   servoThread->setInterval(0.2);
   servoThread->onRun(servo);
 
-  mp3nfcThread->setInterval(1000);
+  mp3nfcThread->setInterval(0.2);
   mp3nfcThread->onRun(nfc);
-
-  // controll.add(shiftStepperThread);
-  // controll.add(servoThread);
-  // controll.add(mp3nfcThread);
 
   Serial.println("OK , Let's GO");
 }
@@ -121,8 +117,8 @@ void doTask() {
       penServo.setPenDown();
       break;
     case NFC_MP3:
+      controll.add(mp3nfcThread);
       Serial.println("NFC_MP3");
-      mp3nfc.play();
       break;
   }
   taskList.pop_front();
@@ -147,27 +143,18 @@ void shiftStepper() {
   right->trigger();
 }
 
-// boolean flag = false;
-
 void servo() {
   if (!penServo.ready()) {
     penServo.servoHandler();
   } else {
     controll.remove(servoThread);
   }
-
-  // if (!penServo.ready()) {
-  //   // Serial.print(".");
-  //   penServo.servoHandler();
-  // } else {
-  //   // // Serial.print(",");
-  //   // if (flag) {
-
-  //   // } else {
-  //   //   penServo.setPenDown();
-  //   // }
-  //   // flag = !flag;
-  // }
 }
 
-void nfc() { mp3nfc.handler(); }
+void nfc() {
+  mp3nfc.handler();
+  if (mp3nfc.checkReady()) {
+    mp3nfc.play();
+    controll.remove(mp3nfcThread);
+  }
+}
