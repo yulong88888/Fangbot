@@ -15,6 +15,7 @@
 //MP3串口
 #define SOFT_SERIAL_MP3_T 6
 #define SOFT_SERIAL_MP3_R 7
+#define MP3_JQ8900_BUSY 3
 
 //舵机
 #define SERVO 9

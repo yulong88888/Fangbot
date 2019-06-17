@@ -94,7 +94,7 @@ void BLE::handlerMsg(cb callback) {
 }
 
 char BLE::doMsg(String str) {
-  if ((byte)str.charAt(0) == 0xAA && (byte)str.charAt(1) == 0x01 &&
+  if ((byte)str.charAt(0) == 0xAA &&
       (byte)str.charAt(2) == 0x04 && (byte)str.charAt(4) == 0x0F &&
       (byte)str.charAt(5) == 0x0D && (byte)str.charAt(6) == 0x0A) {
     return str.charAt(3);

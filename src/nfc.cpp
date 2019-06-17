@@ -6,7 +6,10 @@
 MFRC522 *mfrc522;
 SoftwareSerial *mp3Serial;
 
-void NFC::setup(int SS_PIN, int receivePin, int transmitPin) {
+void NFC::setup(int SS_PIN, int JQ8900_BUSY, int receivePin, int transmitPin) {
+  PIN_JQ8900_BUSY = JQ8900_BUSY;
+  pinMode(PIN_JQ8900_BUSY, INPUT);
+
   mp3Serial = new SoftwareSerial(receivePin, transmitPin);
   mp3Serial->begin(9600);
 
@@ -78,7 +81,7 @@ void NFC::handler() {
   byte len2 = getBytesLength(buffer1);
   sendBuffer[2] = len2 + 1;
   // flash U盘 sd卡 USB:00 SD:01 FLASH:02 NO_DEVICE：FF
-  sendBuffer[3] = 0x02;
+  sendBuffer[3] = 0x01;
   //数据
   for (int i = 0; i < len2; i++) {
     sendBuffer[4 + i] = buffer1[i];
@@ -103,6 +106,8 @@ bool NFC::checkReady() { return readSuccess; }
 
 void NFC::play() {
   mp3Serial->write((char *)sendBuffer);
+  delay(100);
+  while (digitalRead(PIN_JQ8900_BUSY) == HIGH)
   readSuccess = false;
 }
 

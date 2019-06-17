@@ -49,7 +49,8 @@ void setup() {
 
   penServo.setup(SERVO, PENUP_DELAY, PENDOWN_DELAY);
 
-  mp3nfc.setup(NFC_SS_PIN, SOFT_SERIAL_MP3_R, SOFT_SERIAL_MP3_T);
+  mp3nfc.setup(NFC_SS_PIN, MP3_JQ8900_BUSY, SOFT_SERIAL_MP3_R,
+               SOFT_SERIAL_MP3_T);
 
   ble.setup(SOFT_SERIAL_BLE_R, SOFT_SERIAL_BLE_T);
 
