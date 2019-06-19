@@ -100,14 +100,14 @@ void doTask() {
     case LEFT:
       Serial.println("LEFT");
       controll.add(shiftStepperThread);
-      left->turn(100 * steps_per_mm, FORWARD);
-      right->turn(100 * steps_per_mm, FORWARD);
+      left->turn(90 * steps_per_degree, FORWARD);
+      right->turn(90 * steps_per_degree, FORWARD);
       break;
     case RIGHT:
       Serial.println("RIGHT");
       controll.add(shiftStepperThread);
-      left->turn(100 * steps_per_mm, BACKWARD);
-      right->turn(100 * steps_per_mm, BACKWARD);
+      left->turn(90 * steps_per_degree, BACKWARD);
+      right->turn(90 * steps_per_degree, BACKWARD);
       break;
     case SERVO_UP:
       controll.add(servoThread);
