@@ -17,7 +17,7 @@ void BLE::config(String data) {
     bleSerial->println("AT+VER");
     bool flag = wait("JDY-10M-V2.3-MESH");
     if (!flag) {
-      Serial.println("BLE:CONFIG 0.0");
+      Serial.println("BLE:CONFIG 115200");
       bleSerial->begin(115200);
       //改变波特率
       bleSerial->println("AT+BAUD4");
@@ -40,13 +40,15 @@ void BLE::config(String data) {
     wait("+OK");
     bleSerial->println(temp[1]);
     wait("+OK");
-    bleSerial->println(temp[2]);
+    //字符串截取的时候包括了一个\n,使用println是错误的
+    bleSerial->print(temp[2]);
     wait("+OK");
 
     bleSerial->println("AT+RESET");
-    delay(1000);
+    wait("+OK");
 
-    Serial.println("OK");
+    Serial.println("success");
+    bleComData = "";
   } else {
     Serial.println("err");
   }
@@ -60,10 +62,10 @@ bool BLE::wait(String data) {
       char temp = char(bleSerial->read());
       comData += temp;
       if (temp == '\n') {
-        Serial.println("BLE:WAIT");
+        Serial.print("BLE:WAIT ");
         Serial.println(comData);
         if (data.indexOf(comData)) {
-          Serial.println("fuck");
+          Serial.println("wait ok");
           return true;
         }
       }
@@ -94,9 +96,9 @@ void BLE::handlerMsg(cb callback) {
 }
 
 char BLE::doMsg(String str) {
-  if ((byte)str.charAt(0) == 0xAA &&
-      (byte)str.charAt(2) == 0x04 && (byte)str.charAt(4) == 0x0F &&
-      (byte)str.charAt(5) == 0x0D && (byte)str.charAt(6) == 0x0A) {
+  if ((byte)str.charAt(0) == 0xAA && (byte)str.charAt(2) == 0x04 &&
+      (byte)str.charAt(4) == 0x0F && (byte)str.charAt(5) == 0x0D &&
+      (byte)str.charAt(6) == 0x0A) {
     return str.charAt(3);
   } else {
     return 0x00;
